@@ -10,6 +10,7 @@ const RegisterScreen = (props) => {
     const dispatch = useDispatch();
     const globalProfileData = useSelector(store => store.profileReducer);
     const [isEmailFormat,setIsEmailFormat] = useState(true);
+    const [isPassVisible, setIsPassVisible] = useState(false);
 
     const [form, setForm] = useState({
         username: '',
@@ -77,7 +78,15 @@ const RegisterScreen = (props) => {
                                 </Text>
                             </View>
                     }
-                    <Input title="Password" placeholder="Password" onChangeText={(text) => onChangeInput('password', text)} />
+                    <Input 
+                        title="Password" 
+                        placeholder="Password"
+                        isPassword={true}
+                        secureTextEntry={isPassVisible ? false : true}
+                        iconName={isPassVisible ? 'eye-off' : 'eye'}
+                        onPress={() => setIsPassVisible(!isPassVisible)} 
+                        onChangeText={(text) => onChangeInput('password', text)} 
+                    />
                 </View>
                 <Button text="Register" onPress={() => sendData()} />
                 <View style={styles.textContainer}>

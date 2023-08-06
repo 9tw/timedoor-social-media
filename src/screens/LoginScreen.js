@@ -1,10 +1,32 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { Button } from '../components/ButtonComponent';
 import { Input } from '../components/InputComponent';
+import { useSelector } from 'react-redux';
 
 const LoginScreen = (props) => {
     const {navigation} = props;
+    const [isPassVisible, setIsPassVisible] = useState(false);
+    const globalProfileData = useSelector(store => store.profileReducer);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const checkData = () => {
+        if (username === '' || password === '') {
+            alert('Please input your username and password!');
+        } else if ((username.toLowerCase() === globalProfileData.username.toLowerCase()) && (password.toLowerCase() === globalProfileData.password.toLowerCase())) {
+            navigation.navigate('Home');
+        } else {
+            alert('Your username and password didnt match!');
+        };
+        setUsername('');
+        setPassword('');
+    };
+
+    useEffect(() => {
+        console.log('GLOBAL STATE ON LOGIN PAGE');
+        console.log(globalProfileData);
+    }, [globalProfileData]);
 
     return (
         <ScrollView contentContainerStyle={styles.scroll}>
@@ -13,10 +35,24 @@ const LoginScreen = (props) => {
                     <Image style={styles.image} source={require('../../assets/images/login.png')} />
                 </View>
                 <View style={styles.inputContainer}>
-                    <Input title="Username" placeholder="Username" />
-                    <Input title="Password" placeholder="Password" />
+                    <Input 
+                        title="Username" 
+                        placeholder="Username" 
+                        onChangeText={(text) => setUsername(text)}
+                        value={username}
+                    />
+                    <Input 
+                        title="Password" 
+                        placeholder="Password" 
+                        isPassword={true}
+                        secureTextEntry={isPassVisible ? false : true}
+                        iconName={isPassVisible ? 'eye-off' : 'eye'}
+                        onPress={() => setIsPassVisible(!isPassVisible)}
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                    />
                 </View>
-                <Button text="Login" />
+                <Button text="Login" onPress={() => checkData()} />
                 <View style={styles.textContainer}>
                     <Text style={styles.text}>
                         Don't have an account?
