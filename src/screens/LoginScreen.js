@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { Button } from '../components/ButtonComponent';
 import { Input } from '../components/InputComponent';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser } from '../../store/actions/profileAction';
 
 const LoginScreen = (props) => {
     const {navigation} = props;
+    const dispatch = useDispatch();
     const [isPassVisible, setIsPassVisible] = useState(false);
     const globalProfileData = useSelector(store => store.profileReducer);
     const [username, setUsername] = useState('');
@@ -15,7 +17,7 @@ const LoginScreen = (props) => {
         if (username === '' || password === '') {
             alert('Please input your username and password!');
         } else if ((username.toLowerCase() === globalProfileData.username.toLowerCase()) && (password.toLowerCase() === globalProfileData.password.toLowerCase())) {
-            navigation.navigate('Home');
+            dispatch(loginUser(true));
         } else {
             alert('Your username and password didnt match!');
         };

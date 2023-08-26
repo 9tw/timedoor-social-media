@@ -38,8 +38,7 @@ const RegisterScreen = (props) => {
     const sendData = () => {
         if (form.username === '' || form.email === '' || form.password === '' || !isEmailFormat){
             alert('Make sure you fill all the field with the right information!');
-        }
-        else {
+        } else {
             dispatch(createProfile(form));
             Alert.alert(
                 "Success",
@@ -59,9 +58,9 @@ const RegisterScreen = (props) => {
 
     useEffect(() => {
         if (form.email === '') {
-        setIsEmailFormat(true);
+            setIsEmailFormat(true);
         }
-        }, [form.email]);
+    }, [form.email]);
 
     return (
         <ScrollView contentContainerStyle={styles.scroll}>
